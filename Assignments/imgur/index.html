@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <link rel="icon" href="https://img.icons8.com/color/2x/joker-suicide-squad.png"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Imgur clone</title>
+    <meta name="referrer" content="no-referrer">
+</head>
+<link rel='stylesheet' href="./index.css" />
+
+<body>
+    
+  <div id='navbar'>
+    <a href='/'>
+      <img id='imgur' src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Imgur_Logo_Light.svg/1280px-Imgur_Logo_Light.svg.png">
+    </a>
+   
+
+   <h3>MOST VIRAL</h2>
+
+     <input id='search' placeholder="Images , #tags , @users , oh my !"/>
+    <button  onclick="searchQuery()">
+      <img src='https://s.imgur.com/desktop-assets/desktop-assets/icon-search.8d0f9b564a4659d48d8eca38b968a7f2.svg'/>
+    </button>
+ 
+
+  </div>
+
+  <div id='toph'></div>
+
+  <div id='memeshow'>
+
+   <div id='one'></div>
+   <div id='two'></div>
+   <div id='three'></div>
+   <div id='four'></div>
+   <div id='five'></div>
+
+  </div>
+
+
+</body>
+</html>
+<script>
+
+
+
+async function getImg(url) {
+  //console.log(url)
+    let headersList = {
+      Authorization: "Client-ID 133ef594650a58d",
+    };
+
+    let d = await fetch(
+      `${url}`,
+      {
+        method: "GET",
+        headers: headersList,
+      }
+    );
+
+    let { data } = await d.json();
+   console.log(data);
+    appendData( data );
+ 
+  }
+ 
+
+  function appendData(data) {
+   
+    let one = document.getElementById('one');
+    let two = document.getElementById('two');
+    let three = document.getElementById('three');
+    let four = document.getElementById('four');
+    let five = document.getElementById('five');
+
+    one.innerHtml = null;
+    two.innerHTML = null;
+    three.innerHTML = null;
+    four.innerHtml = null;
+    five.innerHTML = null;
+
+
+    for(let j=0 ; j<=data.length ; j++){
+      if (
+       data[j]?.images?.[0].link &&
+         (data[j]?.images?.[0].type == "image/jpeg" ||
+           data[j]?.images?.[0].type == "image/gif")
+       ) {
+       
+         let imgdiv = document.createElement("div");
+         let img = document.createElement("img");
+         img.src = data[j]?.images?.[0].link;
+
+         if(data[j]?.images?.[0].type == "image/gif"){
+           img.style.border ='3px solid transparent';
+           img.style.borderImage = 'linear-gradient(to right, rgb(105, 216, 202) 0%, rgb(53, 146, 255) 50%, rgb(156, 49, 255) 100%)'
+           img.style.borderImageSlice = '1';
+         }
+
+         imgdiv.append(img);
+
+         if(j%5 === 0){
+          five.append(imgdiv);
+         }else if(j%4 === 0){
+           four.append(imgdiv)
+         }else if(j%3 === 0){
+           three.append(imgdiv)
+         }else if(j%2 === 0){
+           two.append(imgdiv)
+         }else{
+           one.append(imgdiv);
+         }
+       
+       }
+
+    }
+  }
+  
+  url1 = 'https://api.imgur.com/3/gallery/hot/viral/1/month?showViral=true&mature=true&album_previews=true';
+
+
+ getImg(url1);
+
+ function searchQuery(){
+
+  let query = document.getElementById('search').value;
+  //console.log(query)
+
+  getImg(`https://api.imgur.com/3/gallery/search/viral/1/all?q=${query}`)
+
+ }
+ url2 = "https://api.imgur.com/3/gallery/search/viral/1/all?q=usa";
+
+
+</script>
+
