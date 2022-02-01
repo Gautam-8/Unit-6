@@ -19,6 +19,7 @@
         width:60%;
         margin: auto;
         padding:10px;
+        margin-top:40px;
     }
     #scrolldiv div{
      width:100px;
@@ -87,7 +88,7 @@ scrolldiv.onscroll = () => {
     const height = scrolldiv.offsetHeight - 4;
     const offset = height - scrollY;
 
-    console.log(scrollY , height ,offset)
+    //console.log(scrollY , height ,offset)
 
     if (offset == 0 || offset == 1){
       load();
